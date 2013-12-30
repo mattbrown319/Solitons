@@ -12,7 +12,7 @@ elseif numSolitons==3,
     mu = 4;
 end
 
-epsilon = 2;      %perturbation strength
+epsilon = 3;      %perturbation strength
 delta_t = 0.01;     %change in t.
 maxtime = 20;       %maxTime
 delta_x = 0.1;       %change in x.  'h'.
