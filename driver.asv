@@ -36,9 +36,9 @@ plot(xgrid,u_pdf(u_baptized));
 
 u_xt = npse_rk4(u_baptized, xgrid, delta_x, delta_t, maxtime, omega );
 %imagesc(u_pdf(u_xt'));
-x_t = centerofmass( u_xt, xgrid );
-plot(x_t)
-max(abs(fft(x_t')));
+x_t = CenterofMass()
+plot(CenterOfMass)
+max(abs(fft(x_t')))
 
 
 

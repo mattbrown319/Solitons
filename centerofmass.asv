@@ -1,0 +1,13 @@
+function x_t = centerofmass( u_xt )
+
+index = 1;
+CenterOfMass = [];
+numSteps = MAXTIME/del_t;
+while index < numSteps
+    OneCenterOfMass = trapz(x,x'.*(abs(u_xt(:,index)).^2))/trapz(x,(abs(u_xt(:,index))).^2); 
+    CenterOfMass = [CenterOfMass OneCenterOfMass];
+    index = index + 1;
+end
+
+end
+
