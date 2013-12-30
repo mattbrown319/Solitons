@@ -12,29 +12,34 @@ elseif numSolitons==3,
     mu = 4;
 end
 
-epsilon = 3;      %perturbation strength
+epsilon = 1;      %perturbation strength
 delta_t = 0.01;     %change in t.
-maxtime = 20;       %maxTime
+maxtime = 10;       %maxTime
 delta_x = 0.1;       %change in x.  'h'.
-omega = .1;        %potential trap constant
+omega = .25;        %potential trap constant
 x_length = 30;        %total length across xgrid
 x_center = 0;
-x_start = 0.0;
+x_start = 1;
 %derived parameters
 numSteps = maxtime/delta_t;     %number of steps forward in RK4
 xgrid=x_center - (x_length/2):delta_x:x_center + (x_length/2);         %xgrid
 
+
+
 u_steady = findSteadySolution(mu,numSolitons,omega,delta_x, xgrid);       %newton to find steady state solution
-%plot(xgrid, abs(u_steady));
+
+
 %[u_perturbed, w] = perturbSolution(u_steady, xgrid, delta_x, omega, mu, epsilon);
 %plot(xgrid, abs(u_perturbed),xgrid,abs(u_steady));
 %u_xt = npse_rk4(u_perturbed, xgrid, delta_x, delta_t, maxtime, omega );
 
 
 u_baptized = baptize(omega, x_start, xgrid, delta_x);
-plot(xgrid,u_pdf(u_baptized));
-%u_xt = npse_rk4(u_baptized, xgrid, delta_x, delta_t, maxtime, omega );
-%imagesc(u_pdf(u_xt'));
+%plot(xgrid,u_pdf(u_baptized));
+u_xt = npse_rk4(u_baptized, xgrid, delta_x, delta_t, maxtime, omega );
+imagesc(u_pdf(u_xt'));
+
+
 
 
 
