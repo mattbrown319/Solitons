@@ -16,10 +16,10 @@ epsilon = 1;      %perturbation strength
 delta_t = 0.01;     %change in t.
 maxtime = 10;       %maxTime
 delta_x = 0.1;       %change in x.  'h'.
-omega = .25;        %potential trap constant
-x_length = 30;        %total length across xgrid
+omega = .002;        %potential trap constant
+x_length = 150;        %total length across xgrid
 x_center = 0;
-x_start = 1;
+x_start = .5;
 %derived parameters
 numSteps = maxtime/delta_t;     %number of steps forward in RK4
 xgrid=x_center - (x_length/2):delta_x:x_center + (x_length/2);         %xgrid
@@ -40,8 +40,13 @@ u_xt = npse_rk4(u_baptized, xgrid, delta_x, delta_t, maxtime, omega );
 imagesc(u_pdf(u_xt'));
 
 
+%plot(xgrid,u_pdf(u_baptized));
 
-
+%u_xt = npse_rk4(u_baptized, xgrid, delta_x, delta_t, maxtime, omega );
+%imagesc(u_pdf(u_xt'));
+x_t = centerofmass( u_xt, xgrid );
+%plot(x_t)
+max(abs(fft(x_t')))
 
 
 
