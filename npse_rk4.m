@@ -6,7 +6,7 @@ index = 1;
 while index < numSteps
     u_xt = [u_xt, onestep_rk4( u_xt(:,end), xgrid', delta_x, index*delta_t, delta_t, omega)];
     if(plotlive == 1)
-        plot(xgrid,u_pdf(u_xt(:,index))),'-o';
+        plot(xgrid,0.5*(omega^2)*(xgrid.^2),xgrid,u_pdf(u_xt(:,index))),'-o';
         drawnow;
     end
     index = index + 1;
