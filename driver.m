@@ -3,13 +3,13 @@ clear,clc
 % set initial parameters
 %numSolitons = 1;
 delta_t = 0.01;     %change in t.
-maxtime = 50;       %maxTime
+maxtime = 10;       %maxTime
 delta_x = 0.1;       %change in x.  'h'.
 omega = .157;        %potential trap constant
 mu = 2.0;
-x_length = 30;        %total length across xgrid
+x_length = 25;        %total length across xgrid
 x_center = 0;
-x_start = [-1.5, 1.5];
+x_start = [-1.5];
 numSolitons = length(x_start);
 plotlive = 1;
 plotsteady = 0;
