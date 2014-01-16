@@ -3,7 +3,7 @@ clear,clc
 % set initial parameters
 %numSolitons = 1;
 delta_t = 0.01;     %change in t.
-maxtime = 10;       %maxTime
+maxtime = 1000;       %maxTime
 delta_x = 0.1;       %change in x.  'h'.
 x_length = 25;        %total length across xgrid
 x_center = 0;          
@@ -71,12 +71,6 @@ xgrid=x_center - (x_length/2):delta_x:x_center + (x_length/2);         %xgrid
                 if(saveplot == 1)
                        imagesc(u_pdf(u_xt));
                        print( '-djpeg', ['crazyplots/','mu=',num2str(mu),',','omega=',num2str(omega),'.jpg'])
-                       %for windows the command will probably be the
-                       %following instead:
-                       %print( '-djpeg', ['crazyplots\','mu=',num2str(mu),',','omega=',num2str(omega),'.jpg'])
-                       %note that all i did was change the direction of the
-                       %slash... that's a big difference between mac and
-                       %windows file systems.
 
 
                 end
@@ -84,6 +78,7 @@ xgrid=x_center - (x_length/2):delta_x:x_center + (x_length/2);         %xgrid
 %     end
       
 %end
+
 
 
 N = length(x_t);

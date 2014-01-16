@@ -1,4 +1,4 @@
-function u_steady = findSteadySolution( mu, numSolitons, omega, delta_x, xgrid, plotsteady )
+function u_steady = findSteadySolution( mu, numSolitons, omega, delta_x, xgrid)
 s = length(xgrid);
 finiteDifference=-diag(ones(1,s))*2+diag(ones(1,s-1),1)+diag(ones(1,s-1),-1);
 finiteDifference(1,end)=1;
@@ -21,7 +21,6 @@ end
 
 u=(omega/pi)^(1/4)*B;         %wave function initial guess for newton
 
-
 tolerance=1;    %c represents the error.  of course.
 while tolerance>1e-10,
     f0=(npse_without_nonlinearity)*u'+diag((3*abs(u).^2+2)./(2*((1+abs(u).^2).^.5)))*(u');
@@ -33,8 +32,5 @@ while tolerance>1e-10,
 end
 
     u_steady = u;
-    if(plotsteady == 1)
-        plot(xgrid,u_pdf(u_steady));
-    end
 end
 
