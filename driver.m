@@ -3,32 +3,33 @@ clear,clc
 % set initial parameters
 %numSolitons = 1;
 delta_t = 0.01;     %change in t.
-maxtime = 10;       %maxTime
+maxtime = 500;       %maxTime
 delta_x = 0.1;       %change in x.  'h'.
-x_length = 25;        %total length across xgrid
+x_length = 40;        %total length across xgrid
 x_center = 0;          
 x_start = [1.5];
-omega = .16;        %potential trap constant
-mu = 1.8;
+omega = .09;        %potential trap constant
+mu = 2.0;
 
 numSolitons = length(x_start);
 plotlive = 0;
-saveplot = 0;
-trackProgress = 1;
-%derived parameters
+saveplot = 1;
 numSteps = maxtime/delta_t;     %number of steps forward in RK4
+trackProgress = 1;
+showProgressPercentInterval = 1;
+modForProgress = showProgressPercentInterval*numSteps*0.01;
 xgrid=x_center - (x_length/2):delta_x:x_center + (x_length/2);         %xgrid
 
 
 
-%omega_array = linspace(.152,.159,20);
+%omega_array = linspace(0.05,.20,16);
 %mu_array = linspace(1.8,2.2,10);
-%omega_array = [.16];
+%omega_array = [0.22632];
 %mu_array = [2.0];
 %for omega_index = 1:length(omega_array)
 %      for mu_index = 1:length(mu_array)
-%          omega = omega_array(omega_index);
-%          mu = mu_array(mu_index);
+ %         omega = omega_array(omega_index);
+ %         mu = mu_array(mu_index);
 
             E_t = [];
             x_t = [];
@@ -44,7 +45,7 @@ xgrid=x_center - (x_length/2):delta_x:x_center + (x_length/2);         %xgrid
             E_t = [E_t trapz(xgrid,u_pdf(u_xt(:,index)))];
             x_t = [x_t centerofmass( u_xt(:,index), xgrid, numSolitons )];
 
-            if(trackProgress == 1 && (mod(index, 1000) == 0 ))
+            if(trackProgress == 1 && (mod(index, modForProgress) == 0 ))
                 [num2str(100*(index/numSteps)) '%']
             end
 
@@ -70,7 +71,7 @@ xgrid=x_center - (x_length/2):delta_x:x_center + (x_length/2);         %xgrid
 
                 if(saveplot == 1)
                        imagesc(u_pdf(u_xt));
-                       print( '-djpeg', ['crazyplots/','mu=',num2str(mu),',','omega=',num2str(omega),'.jpg'])
+                       print( '-djpeg', ['crazyplots/','mu=',num2str(mu),',','omega=',num2str(omega),'.jpg']);
                        %for windows the command will probably be the
                        %following instead:
                        %print( '-djpeg', ['crazyplots\','mu=',num2str(mu),',','omega=',num2str(omega),'.jpg'])
@@ -86,16 +87,20 @@ xgrid=x_center - (x_length/2):delta_x:x_center + (x_length/2);         %xgrid
 %end
 
 
-N = length(x_t);
-fspace = linspace(1/(N*delta_t),(N-1)/(N*delta_t),N);
-plot(fspace,abs(fft(x_t)));
+%N = length(x_t);
+%fspace = linspace(1/(N*delta_t),(N-1)/(N*delta_t),N);
+%plot(fspace,abs(fft(x_t)));
 
 
 %imagesc(u_pdf(u_xt));
 %plot(x_t)
 %max(abs(fft(x_t')))
 
-
+%[S, F, T, P] = spectrogram(x_t,7000, 3500, length(x_t), 1/delta_t);
+%surf(T,F,P,'edgecolor','none');
+%axis tight;
+%view(0,90);
+%xlabel('Time (Seconds)'); ylabel('Hz');
 
 
 %build linear operator matrix
