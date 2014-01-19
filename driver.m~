@@ -3,12 +3,12 @@ clear,clc
 % set initial parameters
 %numSolitons = 1;
 delta_t = 0.01;     %change in t.
-maxtime = 500;       %maxTime
+maxtime = 100;       %maxTime
 delta_x = 0.1;       %change in x.  'h'.
-x_length = 15;        %total length across xgrid
+x_length = 20;        %total length across xgrid
 x_center = 0;          
 x_start = [0.1];
-omega = .5;        %potential trap constant
+omega = .2;        %potential trap constant
 mu = 2.0;
 
 u_xt = zeros((x_length/delta_x)+1,maxtime/delta_t);
@@ -16,8 +16,8 @@ E_t = zeros(1,maxtime/delta_t);
 x_t = zeros(1,maxtime/delta_t);
 
 numSolitons = length(x_start);
-plotlive = 0;
-saveplot = 0;
+plotlive = 1;
+saveplot = 1;
 numSteps = maxtime/delta_t;     %number of steps forward in RK4
 trackProgress = 1;
 showProgressPercentInterval = 1;
@@ -41,12 +41,10 @@ xgrid=x_center - (x_length/2):delta_x:x_center + (x_length/2);         %xgrid
         u_steady = findSteadySolution(mu,0,omega,delta_x, xgrid);       %newton to find steady state solution
         u_baptized = baptize(u_steady, omega, mu, x_start, xgrid, delta_x);
         u_xt(:,1) = u_baptized';
-        E_t(1) = trapz(xgrid,u_pdf(u_xt(:,1)));
-        x_t(1) = centerofmass( u_xt(:,1), xgrid, numSolitons );
-        
+
         index = 1;
         while index < numSteps
-            u_xt(:,index+1) = onestep_rk4( u_xt(:,index), xgrid', delta_x, index*delta_t, delta_t, omega);
+            u_xt(:,index+1) = onestep_rk4( u_xt(:,ind), xgrid', delta_x, index*delta_t, delta_t, omega);
             E_t(index+1) = trapz(xgrid,u_pdf(u_xt(:,index)));
             x_t(index+1) = centerofmass( u_xt(:,index), xgrid, numSolitons );
 
@@ -61,13 +59,13 @@ xgrid=x_center - (x_length/2):delta_x:x_center + (x_length/2);         %xgrid
                 plot(xgrid,0.5*(omega^2)*(xgrid.^2),xgrid,u_pdf(u_xt(:,index+1))),'-o';
                 drawnow;
                 subplot(2,2,2);
-                plot(E_t(2:index+1));
+                plot(E_t(1:index+1));
                 drawnow;
                 subplot(2,2,3);
-                plot(x_t(2:index+1));
+                plot(x_t(1:index+1));
                 drawnow;
                 subplot(2,2,4);
-                imagesc(u_pdf(u_xt(:,2:index+1)));
+                imagesc(u_pdf(u_xt));
 
             end
             index = index + 1;
@@ -92,9 +90,6 @@ xgrid=x_center - (x_length/2):delta_x:x_center + (x_length/2);         %xgrid
 %end
 
 
-
-
-
 %N = length(x_t);
 %fspace = linspace(1/(N*delta_t),(N-1)/(N*delta_t),N);
 %plot(fspace,abs(fft(x_t)));
@@ -104,16 +99,13 @@ xgrid=x_center - (x_length/2):delta_x:x_center + (x_length/2);         %xgrid
 %plot(x_t)
 %max(abs(fft(x_t')))
 
-
-guessWavelength = floor((1/((.21)*(1/sqrt(2))*(omega)))/delta_t);
-[S, F, T, P] = spectrogram(x_t,guessWavelength, floor(guessWavelength/2), length(x_t), 1/delta_t);
-surf(T,F,P,'edgecolor','none');
-axis tight;
-view(0,90);
-xlabel('Time (Seconds)'); ylabel('Hz');
+[S, F, T, P] = spectrogram(x_t,7000, 3500, length(x_t), 1/delta_t);
+%surf(T,F,P,'edgecolor','none');
+%axis tight;
+%view(0,90);
+%xlabel('Time (Seconds)'); ylabel('Hz');
 [maxP, indexMaxP] = max(P);
 plot(x_t(1:floor((1/F(indexMaxP))/delta_t)));
-trapz(x_t(1:floor((1/F(indexMaxP))/delta_t)))
 
 
 %build linear operator matrix
