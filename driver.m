@@ -7,7 +7,7 @@ maxtime = 300;       %maxTime
 delta_x = 0.2;       %change in x.  'h'.
 x_length = 100;        %total length across xgrid
 x_center = 0;          
-omega = .05;       %potential trap constant
+omega = .03;       %potential trap constant
 mu = 2;
 x_start = [2.0];
 numSolitons = length(x_start);
@@ -16,7 +16,7 @@ if(mu < omega/2)
 end
 
 
-plotlive = 1;
+plotlive = 0;
 saveplot = 1;
 numSteps = maxtime/delta_t;     %number of steps forward in RK4
 trackProgress = 1;
@@ -51,7 +51,7 @@ while index < numSteps
         disp(['Start time:  ' datestr(starttime,'mm/dd HH:MM PM')]);
         disp(['Elapsed time:  ' datestr(now - starttime,'HH:MM:SS')]);
         disp(['Estimated time left:  ' datestr((numSteps -  index)*averageTimePerIteration,'HH:MM:SS')]);
-        disp(['Estimated end time: ' datestr((numSteps -  index)*averageTimePerIteration+starttime,'mm/dd HH:MM PM')]);
+        disp(['Estimated end time: ' datestr((numSteps -  index)*averageTimePerIteration+now,'mm/dd HH:MM PM')]);
     end
 
 
@@ -79,14 +79,14 @@ if(saveplot == 1)
        print( '-djpeg', ['crazyplots/','mu=',num2str(mu),',','omega=',num2str(omega),'.jpg']);
 end
 
-%guessWavelength = floor((1/((.21)*(1/sqrt(2))*(omega)))/delta_t);
-%[S, F, T, P] = spectrogram(x_t(1:index),guessWavelength, floor(guessWavelength/2), length(x_t(1:index)), 1/delta_t);
-%surf(T,F,P,'edgecolor','none');
-%axis tight;
-%view(0,90);
-%xlabel('Time (Seconds)'); ylabel('Hz');
-%[maxP, indexMaxP] = max(P);
-%plot(x_t(1:floor((1/F(indexMaxP))/delta_t)));
+guessWavelength = floor((1/((.21)*(1/sqrt(2))*(omega)))/delta_t);
+[S, F, T, P] = spectrogram(x_t(1:index),guessWavelength, floor(guessWavelength/2), length(x_t(1:index)), 1/delta_t);
+surf(T,F,P,'edgecolor','none');
+axis tight;
+view(0,90);
+xlabel('Time (Seconds)'); ylabel('Hz');
+[maxP, indexMaxP] = max(P);
+plot(x_t(1:floor((1/F(indexMaxP))/delta_t)));
 
 
 
